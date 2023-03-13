@@ -1,3 +1,4 @@
+import { IProduct } from "./../interfaces/productInterface";
 import { connection } from "./connection";
 import { ObjectId } from "mongodb";
 
@@ -19,4 +20,15 @@ const findAll = async (size: number, page: number) => {
   return { totalItems, totalPages, size, page, items };
 };
 
-export default { findAll };
+const createProduct = async (product: IProduct) => {
+  const db = await productCollection();
+  return await db.insertOne(product);
+};
+
+const deleteProduct = async (id: string) => {
+  const db = await productCollection();
+  const { deletedCount } = await db.deleteOne({ _id: new ObjectId(id) });
+  return deletedCount;
+};
+
+export default { findAll, createProduct, deleteProduct };
