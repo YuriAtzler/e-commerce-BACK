@@ -31,4 +31,30 @@ const deleteProduct = async (id: string) => {
   return deletedCount;
 };
 
-export default { findAll, createProduct, deleteProduct };
+const toAddDiscount = async (id: string, discount: number) => {
+  const db = await productCollection();
+  const result = await db.updateOne(
+    { _id: new ObjectId(id) },
+    { $set: { discount: { status: true, howMuch: discount } } }
+  );
+
+  return result.modifiedCount;
+};
+
+const toRemoveDiscount = async (id: string) => {
+  const db = await productCollection();
+  const result = await db.updateOne(
+    { _id: new ObjectId(id) },
+    { $set: { discount: { status: false, howMuch: 0 } } }
+  );
+
+  return result.modifiedCount;
+};
+
+export default {
+  findAll,
+  createProduct,
+  deleteProduct,
+  toAddDiscount,
+  toRemoveDiscount,
+};

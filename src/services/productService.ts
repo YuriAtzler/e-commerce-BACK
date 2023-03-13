@@ -20,4 +20,22 @@ const deleteProduct = async (id: string) => {
   }
 };
 
-export default { findAll, createProduct, deleteProduct };
+const toAddDiscount = async (id: string, discount: number) => {
+  const wasUpdated = await productModel.toAddDiscount(id, discount);
+  if (wasUpdated) return "ok";
+  else throw new HttpException(404, "Erro ao adicionar desconto!");
+};
+
+const toRemoveDiscount = async (id: string) => {
+  const wasUpdated = await productModel.toRemoveDiscount(id);
+  if (wasUpdated) return "ok";
+  else throw new HttpException(404, "Erro ao remover desconto!");
+};
+
+export default {
+  findAll,
+  createProduct,
+  deleteProduct,
+  toAddDiscount,
+  toRemoveDiscount,
+};

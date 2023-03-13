@@ -6,7 +6,7 @@ import imageMiddleware from "../middlewares/imageMiddleware";
 const productController = Router();
 
 productController.get(
-  "/find-all",
+  "/find",
   async (req: Request, res: Response): Promise<Response> => {
     const page: string = req.query.page as string;
     const size: string = req.query.size as string;
@@ -45,6 +45,25 @@ productController.delete(
     const { id } = req.params;
     await productService.deleteProduct(id);
     return res.status(200).json({ message: "Produto deletado!" });
+  }
+);
+
+productController.put(
+  "/to-add-discount/:id",
+  async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params;
+    const { discount } = req.body;
+    await productService.toAddDiscount(id, discount);
+    return res.status(200).json({ message: "Desconto adicionado!" });
+  }
+);
+
+productController.put(
+  "/to-remove-discount/:id",
+  async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params;
+    await productService.toRemoveDiscount(id);
+    return res.status(200).json({ message: "Desconto removido!" });
   }
 );
 
